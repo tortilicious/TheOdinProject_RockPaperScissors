@@ -3,12 +3,12 @@
 //Create the player pick function
 
 function playerPick(){
-     let player = prompt ("Write the number: \n1.Rock \n2.Paper \n3.Scissors")
-     if (player == 1) {
-         player = "Rock"
-     } else if (player == 2) {
-         player = "Paper"
-     } else if (player == 3) {
+    let player = prompt ("Write the number: \n1.Rock \n2.Paper \n3.Scissors")
+    if (player == 1) {
+        player = "Rock"
+    } else if (player == 2) {
+        player = "Paper"
+    } else if (player == 3) {
          player = "Scissors"        
     }
     return player
@@ -27,6 +27,7 @@ function cpuPick() {
 // Create the game resolver function
 
 function gameResolver ()  {
+    
     let result;
     const cpu = cpuPick();
     const player = playerPick();
@@ -35,13 +36,42 @@ function gameResolver ()  {
     } else if ((player === "Rock" && cpu === "Scissors") ||
                (player === "Paper" && cpu === "Rock") ||
                (player === "Scissors" && cpu === "Paper")){
-         result = "Player wins!"
+         result = "Player wins this round!"
     } else {
-         result = "CPU wins"
-    }
-    console.log(result)
-    return result
+         result = "CPU wins this round!"
     }
 
-gameResolver()
+    console.log(result)
+    return result
+}
+
+// Create the game function
+
+function game() {
+    let gameWinner;
+    let cpuCount = 0
+    let playerCount = 0
+    let i = 0
+    while (i<5) {
+        let result = gameResolver()
+        if (result === "Player wins this round!") {
+            playerCount++
+        } else if (result === "CPU wins this round!"){
+            cpuCount++
+        }
+        i++
+    }
+    if (cpuCount > playerCount) {
+        gameWinner = "CPU wins the game!!"
+    } else if (playerCount > cpuCount) {
+        gameWinner = "Player wins the game!!"
+    } else {
+        gameWinner = "The game ends in a tie!!"
+    }
+
+    console.log(gameWinner)
+    return gameWinner
+}
+
+game()
 
