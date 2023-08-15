@@ -1,77 +1,102 @@
-//Crear una lista [0, 1, 2] Hacer al jugador elegir y corresponder el numero a una opcion del juego
-
-//Create the player pick function
-
-function playerPick(){
-    let player = prompt ("Write the number: \n1.Rock \n2.Paper \n3.Scissors")
-    if (player == 1) {
-        player = "Rock"
-    } else if (player == 2) {
-        player = "Paper"
-    } else if (player == 3) {
-         player = "Scissors"        
-    }
-    return player
-  }
+// GAME 
 
 //Create the CPU pick function
 
 function cpuPick() {
-    const options = ["Rock", "Paper", "Scissors"]
+    const options = ["rock", "paper", "scissors"]
     let cpuRandomizer = Math.floor(Math.random() * options.length)
     let cpu = options[cpuRandomizer]
+    if (cpu === "rock"){
+        cpuChoice.textContent = "✊"
+    } else if (cpu === "paper"){
+        cpuChoice.textContent = "🖐️"
+    } else {
+        cpuChoice.textContent = "✌️"
+    }
     return cpu;
     }
 
 
 // Create the game resolver function
 
-function gameResolver ()  {
+let playerCount = 0
+let cpuCount = 0
+
+function playRound (clickedButton)  {
     
-    let result;
+    const player = clickedButton;
     const cpu = cpuPick();
-    const player = playerPick();
     if (player === cpu){
-         result = "It's a tie!"
-    } else if ((player === "Rock" && cpu === "Scissors") ||
-               (player === "Paper" && cpu === "Rock") ||
-               (player === "Scissors" && cpu === "Paper")){
-         result = "Player wins this round!"
+        gameText.textContent = "I'ts a tie!"
+    } else if ((player === playerRock && cpu === "scissors") ||
+               (player === playerPaper && cpu === "rock") ||
+               (player === playerScissors && cpu === "paper")){
+        playerCount++
+        playerScore.textContent = `Player: ${playerCount}`       
+        gameText.textContent = "Player wins!"
     } else {
-         result = "CPU wins this round!"
+        cpuCount++
+        cpuScore.textContent = `CPU: ${cpuCount}`
+        gameText.textContent = "CPU wins!"
     }
-
-    console.log(result)
-    return result
+   
 }
 
-// Create the game function
+function playerChoiceUpdate(clickedButton) {
+    if (clickedButton === playerRock) {
+        playerChoice.textContent = "✊";
+    } else if (clickedButton === playerPaper) {
+        playerChoice.textContent = "🖐️";
+    } else {
+        playerChoice.textContent = "✌️";
+    }
+}
 
-function game() {
-    let gameWinner;
-    let cpuCount = 0
-    let playerCount = 0
-    let i = 0
-    while (i<5) {
-        let result = gameResolver()
-        if (result === "Player wins this round!") {
-            playerCount++
-        } else if (result === "CPU wins this round!"){
-            cpuCount++
+
+
+function resetGame(){
+    gameText.textContent = "Score 5 points to win the game."
+    playerScore.textContent = "Player: 0"
+    cpuScore.textContent = "CPU: 0"
+    playerChoice.textContent = "❔"
+    cpuChoice.textContent = "❔"
+    cpuCount = 0
+    playerCount = 0
+}
+
+// UI
+
+const playerChoices = document.querySelectorAll(".play");
+const playerRock = document.querySelector("#rock");
+const playerPaper = document.querySelector("#paper");
+const playerScissors = document.querySelector("#scissors");
+let playerScore = document.querySelector(".player-score")
+let cpuScore = document.querySelector(".cpu-score")
+let gameText = document.querySelector(".sub-text") 
+let playerChoice = document.querySelector(".player-choice")
+let cpuChoice = document.querySelector(".cpu-choice")
+
+playerChoices.forEach(function(playerChoice) {
+    playerChoice.addEventListener("mouseenter", function() {
+        this.style.backgroundColor = "yellow";
+    });
+
+    playerChoice.addEventListener("mouseleave", function() {
+        this.style.backgroundColor = "#04314E";
+    });
+});
+
+
+playerChoices.forEach(function(playerChoice){
+    playerChoice.addEventListener("click", function(){
+        playerChoiceUpdate(this);
+        playRound(playerChoice);
+        if (playerCount === 5) {
+            alert("Player wins the game!");
+            resetGame();
+        } else if (cpuCount === 5) {
+            alert("CPU wins the game!");
+            resetGame();
         }
-        i++
-    }
-    if (cpuCount > playerCount) {
-        gameWinner = "CPU wins the game!!"
-    } else if (playerCount > cpuCount) {
-        gameWinner = "Player wins the game!!"
-    } else {
-        gameWinner = "The game ends in a tie!!"
-    }
-
-    console.log(gameWinner)
-    return gameWinner
-}
-
-game()
-
+    });
+});
